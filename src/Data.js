@@ -22,5 +22,4 @@ const categoriesAndCount = uniqueCategories.map((category) => {
   }
 });
 
-export default data;
-export { categories, uniqueCategories, categoriesAndCount };
+export { categories, uniqueCategories, categoriesAndCount, data };

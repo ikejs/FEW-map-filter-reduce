@@ -1,21 +1,31 @@
-import React from 'react';
-import Data, { categories, uniqueCategories, categoriesAndCount } from './Data';
+import React, { Component } from 'react';
+import CategoryButton from './CategoryButton';
+import data from './Data';
 
-function CategoryButtons() {
-  return (
-    <div>
-      <div className="btn-group btn-group-toggle col-md-6 offset-md-3 overflow-auto" data-toggle="buttons">
-        {categoriesAndCount.map((category, i) => {
-          return (
-            <label className="btn btn-secondary" key={i}>
-              <input type="radio" name="categoryButton" id={i} autoComplete="off" />
-                {category.name} <span class="badge badge-light">{category.count}</span>
-            </label>
-          )
-        })}
+class CategoryButtons extends Component {
+
+  chooseCategory(i) {
+    if(this.props.categories[i].name === "All") {
+      this.setState({ currentItems: data });
+    } else {
+      alert(this.props.categories[i].name);
+    }
+  }
+
+  render() {
+    return (
+      <div className="col-md-6 offset-md-3 overflow-auto rounded pl-0 pr-0">
+        <div className="btn-group btn-group-toggle" data-toggle="buttons">
+          {this.props.categories.map((category, i) => {
+            return (
+              <CategoryButton category={category} i={i} />
+            )
+          })}
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
+  
 }
 
 export default CategoryButtons;
