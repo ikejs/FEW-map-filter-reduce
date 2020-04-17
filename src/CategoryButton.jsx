@@ -6,7 +6,9 @@ function CategoryButton(props) {
 
 
   return(
-    <label className="btn btn-secondary">
+    <label
+      className={checked ? "btn btn-secondary active" : "btn btn-secondary"}
+      >
       <input type="checkbox"
         checked={checked ? "checked" : ""}
         key={i}

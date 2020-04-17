@@ -16,20 +16,46 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedCategories: []
+      selectedCategories: [],
+      currentProducts: []
     }
   }
 
-  chooseCategory(name) {
-    const newSelectedCategories = [...this.state.selectedCategories];
+  sortProducts = async (categories) => {
+    const newProducts = [];
+    for (const category of categories) {
+      const product = await data.filter(product => product.category === category);
+      if(category === "All") {
+        newProducts.push(...data);
+      }
+      newProducts.unshift(...product);
+    }
+    return newProducts;
+  }
+
+  async chooseCategory(name) {
+    let newSelectedCategories = [...this.state.selectedCategories];
     const index = newSelectedCategories.indexOf(name);
+
+
+    if (name === "All") {
+      this.setState({ selectedCategories: name, currentProducts: data });
+    }
+
+    
+    // if ((name !== "All") && (this.state.selectedCategories.includes("All"))) {
+    //   newSelectedCategories.splice(newSelectedCategories.includes("All"), 1);
+    // } else if ((name === "All") && (this.state.selectedCategories.length > 1)) {
+    //   newSelectedCategories = ["All"];
     if (index === -1) {
       newSelectedCategories.push(name);
     } else {
       newSelectedCategories.splice(index, 1);
     }
-    this.setState({ selectedCategories: newSelectedCategories });
+    const newProducts = await this.sortProducts(newSelectedCategories);
+    this.setState({ selectedCategories: newSelectedCategories, currentProducts: newProducts });
   }
+
 
   render() {
       return (
@@ -55,7 +81,7 @@ class App extends Component {
           </div>
           <div className="row">
             {
-              data.map(product => {
+              this.state.currentProducts.map(product => {
                 return <Product product={product} />
               })
             }
